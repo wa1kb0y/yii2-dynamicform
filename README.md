@@ -74,6 +74,7 @@ use wbraganca\dynamicform\DynamicFormWidget;
                 'limit' => 4, // the maximum times, an element can be cloned (default 999)
                 'min' => 1, // 0 or 1 (default 1)
                 'insertButton' => '.add-item', // css class
+                'cloneButton' => '.clone-item', // css class
                 'deleteButton' => '.remove-item', // css class
                 'model' => $modelsAddress[0],
                 'formId' => 'dynamic-form',
@@ -94,6 +95,7 @@ use wbraganca\dynamicform\DynamicFormWidget;
                         <h3 class="panel-title pull-left">Address</h3>
                         <div class="pull-right">
                             <button type="button" class="add-item btn btn-success btn-xs"><i class="glyphicon glyphicon-plus"></i></button>
+                            <button type="button" class="clone-item btn btn-success btn-xs"><i class="glyphicon glyphicon-plus"></i></button>
                             <button type="button" class="remove-item btn btn-danger btn-xs"><i class="glyphicon glyphicon-minus"></i></button>
                         </div>
                         <div class="clearfix"></div>

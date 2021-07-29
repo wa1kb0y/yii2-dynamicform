@@ -42,6 +42,10 @@
            _addItem(widgetOptions, e, $elem);
         },
 
+        cloneItem: function (widgetOptions, e, $elem) {
+            _cloneItem(widgetOptions, e, $elem);
+        },
+
         deleteItem: function (widgetOptions, e, $elem) {
            _deleteItem(widgetOptions, e, $elem);
         },
@@ -117,13 +121,38 @@
         if (count < widgetOptions.limit) {
             $toclone = widgetOptions.template;
             $newclone = $toclone.clone(false, false);
-
+            
             if (widgetOptions.insertPosition === 'top') {
                 $elem.closest('.' + widgetOptions.widgetContainer).find(widgetOptions.widgetBody).prepend($newclone);
             } else {
                 $elem.closest('.' + widgetOptions.widgetContainer).find(widgetOptions.widgetBody).append($newclone);
             }
+            _updateAttributes(widgetOptions);
+            _restoreSpecialJs(widgetOptions);
+            _fixFormValidaton(widgetOptions);
+            $elem.closest('.' + widgetOptions.widgetContainer).triggerHandler(events.afterInsert, $newclone);
+        } else {
+            // trigger a custom event for hooking
+            $elem.closest('.' + widgetOptions.widgetContainer).triggerHandler(events.limitReached, widgetOptions.limit);
+        }
+    };
 
+    var _cloneItem = function (widgetOptions, e, $elem) {
+        var count = _count($elem, widgetOptions);
+
+        if (count < widgetOptions.limit) {
+            $source = $elem.closest(widgetOptions.widgetItem);
+            $toclone = widgetOptions.template;
+            $newclone = $toclone.clone(false, false);
+            // copy values
+            $source.find('input:not([type=hidden])').each(function (index) {
+                $newclone.find('input#'+$(this).attr('id')).val( $(this).val() );
+            });
+            if (widgetOptions.insertPosition === 'top') {
+                $elem.closest('.' + widgetOptions.widgetContainer).find(widgetOptions.widgetBody).prepend($newclone);
+            } else {
+                $elem.closest('.' + widgetOptions.widgetContainer).find(widgetOptions.widgetBody).append($newclone);
+            }
             _updateAttributes(widgetOptions);
             _restoreSpecialJs(widgetOptions);
             _fixFormValidaton(widgetOptions);
